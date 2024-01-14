@@ -543,5 +543,59 @@ float DS248xTemperatureSensor::get_temp_c() {
 }
 std::string DS248xTemperatureSensor::unique_id() { return "dallas-" + str_lower_case(format_hex(this->address_)); }
 
+void DS248xComponent::select_channel(uint8_t channel) {
+  uint8_t ch, ch_read;
+
+  switch (channel) {
+    case 0:
+    default:
+      ch = 0xf0;
+      ch_read = 0xb8;
+      break;
+    case 1:
+      ch = 0xe1;
+      ch_read = 0xb1;
+      break;
+    case 2:
+      ch = 0xd2;
+      ch_read = 0xaa;
+      break;
+    case 3:
+      ch = 0xc3;
+      ch_read = 0xa3;
+      break;
+    case 4:
+      ch = 0xb4;
+      ch_read = 0x9c;
+      break;
+    case 5:
+      ch = 0xa5;
+      ch_read = 0x95;
+      break;
+    case 6:
+      ch = 0x96;
+      ch_read = 0x8e;
+      break;
+    case 7:
+      ch = 0x87;
+      ch_read = 0x87;
+      break;
+  }
+
+  wait_while_busy();
+  write_command(DS248X_COMMAND_SETREADPTR, DS248X_POINTER_CONFIG);
+  //Wire.write(0xc3);
+  //Wire.write(ch);
+  write_to_wire(ch);
+  wait_while_busy();
+
+  uint8_t check = read_from_wire();
+
+  if (check != ch_read) {
+    ESP_LOGW(TAG, "Channel selection failed!");
+    // Handle the error as needed.
+  }
+}
+
 }  // namespace ds248x
 }  // namespace esphome

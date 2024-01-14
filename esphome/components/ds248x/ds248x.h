@@ -27,6 +27,8 @@ class DS248xComponent : public PollingComponent, public i2c::I2CDevice {
 
   void register_sensor(DS248xTemperatureSensor *sensor);
 
+  void select_channel(uint8_t channel);
+
  protected:
   uint32_t readIdx;
   uint64_t searchAddress;
