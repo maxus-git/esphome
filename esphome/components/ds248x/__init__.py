@@ -25,7 +25,6 @@ CONFIG_SCHEMA = (
             cv.Optional(CONF_HUB_SLEEP, default=False): cv.boolean,
             cv.Optional(CONF_ACTIVE_PULLUP, default=False): cv.boolean,
             cv.Optional(CONF_STRONG_PULLUP, default=False): cv.boolean,
-
         }
     )
     .extend(cv.polling_component_schema("60s"))
@@ -46,4 +45,4 @@ async def to_code(config):
       pin = await cg.gpio_pin_expression(config[CONF_SLEEP_PIN])
       cg.add(var.set_sleep_pin(pin))
 
-    cg.add(var.set_channel(0))  # Set default channel to 0
+    # cg.add(var.set_channel(0))  # Set default channel to 0
