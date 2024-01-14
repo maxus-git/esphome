@@ -543,7 +543,7 @@ float DS248xTemperatureSensor::get_temp_c() {
 }
 std::string DS248xTemperatureSensor::unique_id() { return "dallas-" + str_lower_case(format_hex(this->address_)); }
 
-void DS248xTemperatureSensor::select_channel(uint8_t channel) {
+void DS248xTemperatureSensor::set_channel(uint8_t channel) {
   uint8_t ch, ch_read;
 
   switch (channel) {
