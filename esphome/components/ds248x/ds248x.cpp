@@ -407,6 +407,60 @@ const std::string &DS248xTemperatureSensor::get_address_name() {
   return this->address_name_;
 }
 
+void DS248xTemperatureSensor::set_channel(uint8_t channel) {
+  uint8_t ch, ch_read;
+
+  switch (channel) {
+    case 0:
+    default:
+      ch = 0xf0;
+      ch_read = 0xb8;
+      break;
+    case 1:
+      ch = 0xe1;
+      ch_read = 0xb1;
+      break;
+    case 2:
+      ch = 0xd2;
+      ch_read = 0xaa;
+      break;
+    case 3:
+      ch = 0xc3;
+      ch_read = 0xa3;
+      break;
+    case 4:
+      ch = 0xb4;
+      ch_read = 0x9c;
+      break;
+    case 5:
+      ch = 0xa5;
+      ch_read = 0x95;
+      break;
+    case 6:
+      ch = 0x96;
+      ch_read = 0x8e;
+      break;
+    case 7:
+      ch = 0x87;
+      ch_read = 0x87;
+      break;
+  }
+
+  this->parent_->wait_while_busy();
+  this->parent_->write_command(DS248X_COMMAND_SETREADPTR, DS248X_POINTER_CONFIG);
+  //Wire.write(0xc3);
+  //Wire.write(ch);
+  this->parent_->write_to_wire(ch);
+  this->parent_->wait_while_busy();
+
+  uint8_t check = this->parent_->read_from_wire();
+
+  if (check != ch_read) {
+    ESP_LOGW(TAG, "Channel selection failed!");
+    // Handle the error as needed.
+  }
+}
+
 uint16_t DS248xTemperatureSensor::millis_to_wait_for_conversion() const {
   switch (this->resolution_) {
     case 9:
@@ -439,8 +493,6 @@ bool IRAM_ATTR DS248xTemperatureSensor::read_scratch_pad() {
 }
 
 bool DS248xTemperatureSensor::setup_sensor() {
-  this->set_channel(0); // WIEDER LÖSCHEN
-
   bool r = this->read_scratch_pad();
 
   if (!r) {
@@ -544,60 +596,6 @@ float DS248xTemperatureSensor::get_temp_c() {
   return temp / 128.0f;
 }
 std::string DS248xTemperatureSensor::unique_id() { return "dallas-" + str_lower_case(format_hex(this->address_)); }
-
-void DS248xTemperatureSensor::set_channel(uint8_t channel) {
-  uint8_t ch, ch_read;
-
-  switch (channel) {
-    case 0:
-    default:
-      ch = 0xf0;
-      ch_read = 0xb8;
-      break;
-    case 1:
-      ch = 0xe1;
-      ch_read = 0xb1;
-      break;
-    case 2:
-      ch = 0xd2;
-      ch_read = 0xaa;
-      break;
-    case 3:
-      ch = 0xc3;
-      ch_read = 0xa3;
-      break;
-    case 4:
-      ch = 0xb4;
-      ch_read = 0x9c;
-      break;
-    case 5:
-      ch = 0xa5;
-      ch_read = 0x95;
-      break;
-    case 6:
-      ch = 0x96;
-      ch_read = 0x8e;
-      break;
-    case 7:
-      ch = 0x87;
-      ch_read = 0x87;
-      break;
-  }
-
-  this->parent_->wait_while_busy();
-  this->parent_->write_command(DS248X_COMMAND_SETREADPTR, DS248X_POINTER_CONFIG);
-  //Wire.write(0xc3);
-  //Wire.write(ch);
-  this->parent_->write_to_wire(ch);
-  this->parent_->wait_while_busy();
-
-  uint8_t check = this->parent_->read_from_wire();
-
-  if (check != ch_read) {
-    ESP_LOGW(TAG, "Channel selection failed!");
-    // Handle the error as needed.
-  }
-}
 
 }  // namespace ds248x
 }  // namespace esphome
