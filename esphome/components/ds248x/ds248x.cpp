@@ -439,6 +439,8 @@ bool IRAM_ATTR DS248xTemperatureSensor::read_scratch_pad() {
 }
 
 bool DS248xTemperatureSensor::setup_sensor() {
+  this->set_channel(0); // WIEDER LÖSCHEN
+
   bool r = this->read_scratch_pad();
 
   if (!r) {
