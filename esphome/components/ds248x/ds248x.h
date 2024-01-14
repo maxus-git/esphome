@@ -71,9 +71,6 @@ class DS248xTemperatureSensor : public sensor::Sensor {
   /// Helper to create (and cache) the name for this sensor. For example "0xfe0000031f1eaf29".
   const std::string &get_address_name();
 
-  /// Select the channel (default=0), DS2482 has 8 channels (0-7)
-  void set_ch(uint8_t channel);
-
   /// Set the 64-bit unsigned address for this sensor.
   void set_address(uint64_t address);
   /// Get the index of this sensor. (0 if using address.)
@@ -86,6 +83,10 @@ class DS248xTemperatureSensor : public sensor::Sensor {
   void set_resolution(uint8_t resolution);
   /// Get the number of milliseconds we have to wait for the conversion phase.
   uint16_t millis_to_wait_for_conversion() const;
+  /// Select the channel (default=0), DS2482 has 8 channels (0-7)
+  void set_channel(uint8_t channel);
+  /// Get the channel
+  uint8_t get_channel() const;
 
   bool setup_sensor();
   bool read_scratch_pad();
@@ -100,6 +101,7 @@ class DS248xTemperatureSensor : public sensor::Sensor {
   DS248xComponent *parent_;
   uint64_t address_;
   optional<uint8_t> index_;
+  uint8_t channel_;
 
   uint8_t resolution_;
   std::string address_name_;

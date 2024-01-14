@@ -129,6 +129,7 @@ void DS248xComponent::dump_config() {
     }
     ESP_LOGCONFIG(TAG, "    Address: %s", sensor->get_address_name().c_str());
     ESP_LOGCONFIG(TAG, "    Resolution: %u", sensor->get_resolution());
+    ESP_LOGCONFIG(TAG, "    Channel: %u", sensor->get_channel());
   }
 }
 
@@ -406,9 +407,12 @@ const std::string &DS248xTemperatureSensor::get_address_name() {
 
   return this->address_name_;
 }
+uint8_t DS248xTemperatureSensor::get_channel() const {return this->channel_; }
 
-void DS248xTemperatureSensor::set_ch(uint8_t channel) {
+void DS248xTemperatureSensor::set_channel(uint8_t channel) {
   uint8_t ch, ch_read;
+
+  this->channel_ = channel;
 
   switch (channel) {
     case 0:
