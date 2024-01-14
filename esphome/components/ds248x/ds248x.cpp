@@ -65,12 +65,8 @@ void DS248xComponent::setup() {
   this->reset_hub();
   uint64_t address = 0;
   std::vector<uint64_t> raw_sensors;
-  DS248xTemperatureSensor *sensor;
-  for (uint8_t i=0; i<=7; i++) {
-    sensor->set_channel(i);
-    while(this->search(&address)) {
-      raw_sensors.push_back(address);
-    }
+  while(this->search(&address)) {
+    raw_sensors.push_back(address);
   }
 
   for (auto &address : raw_sensors) {
