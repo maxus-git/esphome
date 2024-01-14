@@ -407,7 +407,7 @@ const std::string &DS248xTemperatureSensor::get_address_name() {
   return this->address_name_;
 }
 
-void DS248xTemperatureSensor::set_channel(uint8_t channel) {
+void DS248xTemperatureSensor::set_ch(uint8_t channel) {
   uint8_t ch, ch_read;
 
   switch (channel) {

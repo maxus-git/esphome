@@ -49,6 +49,6 @@ async def to_code(config):
 
     cg.add(var.set_parent(hub))
 
-    cg.add(var.set_channel(config[CONF_CHANNEL]))
+    cg.add(var.set_ch(config[CONF_CHANNEL]))
 
     cg.add(hub.register_sensor(var))

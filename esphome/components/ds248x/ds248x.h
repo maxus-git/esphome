@@ -72,7 +72,7 @@ class DS248xTemperatureSensor : public sensor::Sensor {
   const std::string &get_address_name();
 
   /// Select the channel (default=0), DS2482 has 8 channels (0-7)
-  void set_channel(uint8_t channel);
+  void set_ch(uint8_t channel);
 
   /// Set the 64-bit unsigned address for this sensor.
   void set_address(uint64_t address);
