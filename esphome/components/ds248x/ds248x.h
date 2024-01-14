@@ -84,9 +84,9 @@ class DS248xTemperatureSensor : public sensor::Sensor {
   /// Get the number of milliseconds we have to wait for the conversion phase.
   uint16_t millis_to_wait_for_conversion() const;
   /// Select the channel (default=0), DS2482 has 8 channels (0-7)
-  void set_channel(uint8_t channel);
+  void set_channel(uint8_t channel);  // MARKUS
   /// Get the channel
-  uint8_t get_channel() const;
+  uint8_t get_channel() const;  // MARKUS
 
   bool setup_sensor();
   bool read_scratch_pad();
@@ -101,7 +101,7 @@ class DS248xTemperatureSensor : public sensor::Sensor {
   DS248xComponent *parent_;
   uint64_t address_;
   optional<uint8_t> index_;
-  uint8_t channel_;
+  uint8_t channel_;  // MARKUS
 
   uint8_t resolution_;
   std::string address_name_;
