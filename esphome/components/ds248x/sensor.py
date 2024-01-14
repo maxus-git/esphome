@@ -6,6 +6,7 @@ from esphome.const import (
     CONF_DALLAS_ID,
     CONF_INDEX,
     CONF_RESOLUTION,
+    CONF_CHANNEL,
     DEVICE_CLASS_TEMPERATURE,
     STATE_CLASS_MEASUREMENT,
     UNIT_CELSIUS,
@@ -26,6 +27,7 @@ CONFIG_SCHEMA = cv.All(
             cv.GenerateID(CONF_DALLAS_ID): cv.use_id(DS248xComponent),
             cv.Optional(CONF_ADDRESS): cv.hex_int,
             cv.Optional(CONF_INDEX): cv.positive_int,
+            cv.Optional(CONF_CHANNEL, default=0): cv.int_range(min=0, max=7),
             cv.Optional(CONF_RESOLUTION, default=12): cv.int_range(min=9, max=12),
         }
     ),
@@ -44,6 +46,9 @@ async def to_code(config):
 
     if CONF_RESOLUTION in config:
         cg.add(var.set_resolution(config[CONF_RESOLUTION]))
+
+    if CONF_CHANNEL in config:
+        cg.add(var.set_channel(config[CONF_CHANNEL]))
 
     cg.add(var.set_parent(hub))
 
