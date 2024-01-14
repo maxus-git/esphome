@@ -44,5 +44,3 @@ async def to_code(config):
     if CONF_SLEEP_PIN in config:
       pin = await cg.gpio_pin_expression(config[CONF_SLEEP_PIN])
       cg.add(var.set_sleep_pin(pin))
-    
-    cg.add(var.set_ch(0)) # default channel to 0
