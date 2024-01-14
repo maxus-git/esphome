@@ -27,8 +27,6 @@ class DS248xComponent : public PollingComponent, public i2c::I2CDevice {
 
   void register_sensor(DS248xTemperatureSensor *sensor);
 
-  void select_channel(uint8_t channel);
-
  protected:
   uint32_t readIdx;
   uint64_t searchAddress;
@@ -85,6 +83,8 @@ class DS248xTemperatureSensor : public sensor::Sensor {
   void set_resolution(uint8_t resolution);
   /// Get the number of milliseconds we have to wait for the conversion phase.
   uint16_t millis_to_wait_for_conversion() const;
+  /// Select the channel (default=0), DS2482 has 8 channels (0-7)
+  void select_channel(uint8_t channel);
 
   bool setup_sensor();
   bool read_scratch_pad();
