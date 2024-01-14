@@ -47,8 +47,8 @@ async def to_code(config):
     if CONF_RESOLUTION in config:
         cg.add(var.set_resolution(config[CONF_RESOLUTION]))
 
-    cg.add(var.set_channel(config[CONF_CHANNEL]))
-
     cg.add(var.set_parent(hub))
+
+    cg.add(var.set_channel(config[CONF_CHANNEL]))
 
     cg.add(hub.register_sensor(var))
