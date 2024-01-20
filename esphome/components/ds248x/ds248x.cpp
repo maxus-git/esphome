@@ -56,7 +56,6 @@ static const char *const TAG = "ds248x";
 
 void DS248xComponent::setup() {
   ESP_LOGCONFIG(TAG, "Setting up DS248x...");
-  ESP_LOGE(TAG, "Setting up DS248x...");
 
   if (this->sleep_pin_) {
     this->sleep_pin_->setup();
