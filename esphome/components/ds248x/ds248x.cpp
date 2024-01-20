@@ -472,15 +472,10 @@ void DS248xTemperatureSensor::switch_channel(uint8_t channel) { // MARKUS
       break;
   }
 
-  this->parent_->wait_while_busy();
   this->parent_->write_command(DS248X_COMMAND_SELECT_CH, ch);
 
-  this->parent_->wait_while_busy();
-  this->parent_->write_command(DS248X_COMMAND_SETREADPTR, DS248X_POINTER_CONFIG);
-  //Wire.write(0xc3);
-  //Wire.write(ch);
-  this->parent_->wait_while_busy();
-
+  //this->parent_->write_command(DS248X_COMMAND_SETREADPTR, DS248X_POINTER_CONFIG);
+  
   uint8_t check = this->parent_->read_from_wire();
   ESP_LOGD(TAG, "check: %u", check);
 
