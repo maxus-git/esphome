@@ -76,7 +76,7 @@ void DS248xComponent::setup() {
       sensor->switch_channel(channel);
       while(this->search(&address)) {
         raw_sensors.push_back(address);
-        ESP_LOGD(TAG, "address: %u", address);
+        ESP_LOGD(TAG, "address: %s", format_hex(address).c_str());
       }
     }
   }
