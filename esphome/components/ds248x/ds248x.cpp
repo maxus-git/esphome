@@ -76,6 +76,7 @@ void DS248xComponent::setup() {
         raw_sensors.push_back(address);
       }
     }
+    else sensor->switch_channel(0);
   }
   
   for (auto &address : raw_sensors) {
