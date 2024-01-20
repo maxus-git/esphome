@@ -55,7 +55,6 @@ static const char *const TAG = "ds248x";
 
 
 void DS248xComponent::setup() {
-  delay(2000);
   ESP_LOGCONFIG(TAG, "Setting up DS248x...");
 
   if (this->sleep_pin_) {
@@ -66,12 +65,12 @@ void DS248xComponent::setup() {
   this->reset_hub();
   uint64_t address = 0;
   std::vector<uint64_t> raw_sensors;
-/*   uint8_t channel = 0;
+  uint8_t channel = 0;
   for (auto *sensor : this->sensors_) {
     channel = sensor->get_channel();
-    ESP_LOGW(TAG, "Channel 1 %u:", channel);
+    ESP_LOGW(TAG, "Channel: %u", channel);
     if (channel > 0) {
-      ESP_LOGW(TAG, "Channel 2 %u:", channel);
+      ESP_LOGW(TAG, "Channel > 0: %u", channel);
       sensor->switch_channel(channel);
       
       while(this->search(&address)) {
@@ -79,12 +78,12 @@ void DS248xComponent::setup() {
       }
     }
     else sensor->switch_channel(0);
-  } */
+  }
 
-  while(this->search(&address)) {
+  /* while(this->search(&address)) {
     raw_sensors.push_back(address);
     ESP_LOGD(TAG, "Channel: test");
-  }
+  } */
   
   for (auto &address : raw_sensors) {
     auto *address8 = reinterpret_cast<uint8_t *>(&address);
