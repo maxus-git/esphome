@@ -329,7 +329,7 @@ void DS248xComponent::write_to_wire(uint8_t data) {
   this->write_command(DS248X_COMMAND_WRITEBYTE, data);
 }
 
-uint8_t DS248xComponent::read_from_wire() {
+uint8_t DS248xComponent::read_from_wire(uint8_t pointer_code) {
   auto status = wait_while_busy();
 
   if (status & DS248X_STATUS_BUSY) {
@@ -347,7 +347,8 @@ uint8_t DS248xComponent::read_from_wire() {
 
   std::array<uint8_t, 2> cmd;
   cmd[0] = DS248X_COMMAND_SETREADPTR;
-  cmd[1] = DS248X_POINTER_DATA;
+  //cmd[1] = DS248X_POINTER_DATA;
+  cmd[1] = pointer_code;
   this->write(cmd.data(), sizeof(cmd));
 
   uint8_t data_byte;
@@ -478,7 +479,7 @@ void DS248xTemperatureSensor::switch_channel(uint8_t channel) { // MARKUS
 
   this->parent_->write_command(DS248X_COMMAND_SETREADPTR, DS248X_CH_SEL_REGISTER);
   
-  uint8_t check = this->parent_->read_from_wire();
+  uint8_t check = this->parent_->read_from_wire(DS248X_CH_SEL_REGISTER);
   //uint8_t check = this->parent_->read(&check, sizeof(check));
   ESP_LOGD(TAG, "check: %u", check);
 
