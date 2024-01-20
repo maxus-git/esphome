@@ -425,7 +425,10 @@ const std::string &DS248xTemperatureSensor::get_address_name() {
 }
 uint8_t DS248xTemperatureSensor::get_channel() const {return this->channel_; } // MARKUS
 
-void DS248xTemperatureSensor::set_channel(uint8_t channel) { channel_ = channel; } // MARKUS
+// MARKUS
+void DS248xTemperatureSensor::set_channel(uint8_t channel) { 
+  this->channel_ = channel;
+  ESP_LOGD(TAG, "set_channel: %u", channel); } 
 
 void DS248xTemperatureSensor::switch_channel(uint8_t channel) { // MARKUS
   uint8_t ch, ch_read;
