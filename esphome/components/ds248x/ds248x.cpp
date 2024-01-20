@@ -13,6 +13,7 @@ static const uint8_t DS248X_COMMAND_WRITEBYTE    = 0xA5;
 static const uint8_t DS248X_COMMAND_READBYTE     = 0x96;
 static const uint8_t DS248X_COMMAND_SINGLEBIT    = 0x87;
 static const uint8_t DS248X_COMMAND_TRIPLET      = 0x78;
+static const uint8_t DS248X_COMMAND_SELECT_CH    = 0xC3;
 
 static const uint8_t DS248X_POINTER_STATUS       = 0xF0;
 static const uint8_t DS248X_STATUS_BUSY          = (1 << 0);
@@ -472,14 +473,16 @@ void DS248xTemperatureSensor::switch_channel(uint8_t channel) { // MARKUS
   }
 
   this->parent_->wait_while_busy();
+  this->parent_->write_command(DS248X_COMMAND_SELECT_CH, ch);
+
+  this->parent_->wait_while_busy();
   this->parent_->write_command(DS248X_COMMAND_SETREADPTR, DS248X_POINTER_CONFIG);
   //Wire.write(0xc3);
   //Wire.write(ch);
-  this->parent_->write_to_wire(0xc3);
-  this->parent_->write_to_wire(ch);
   this->parent_->wait_while_busy();
 
   uint8_t check = this->parent_->read_from_wire();
+  ESP_LOGD(TAG, "check: %u", check);
 
   if (check != ch_read) {
     ESP_LOGW(TAG, "Channel selection failed!");
