@@ -25,6 +25,7 @@ CONFIG_SCHEMA = (
             cv.Optional(CONF_HUB_SLEEP, default=False): cv.boolean,
             cv.Optional(CONF_ACTIVE_PULLUP, default=False): cv.boolean,
             cv.Optional(CONF_STRONG_PULLUP, default=False): cv.boolean,
+            cv.Optional('ds2482-800', default=False): cv.boolean,
         }
     )
     .extend(cv.polling_component_schema("60s"))
@@ -40,6 +41,7 @@ async def to_code(config):
     cg.add(var.set_hub_sleep(config[CONF_HUB_SLEEP]))
     cg.add(var.set_active_pullup(config[CONF_ACTIVE_PULLUP]))
     cg.add(var.set_strong_pullup(config[CONF_STRONG_PULLUP]))
+    cg.add(var.set_ds2482_800(config['ds2482-800']))
 
     if CONF_SLEEP_PIN in config:
       pin = await cg.gpio_pin_expression(config[CONF_SLEEP_PIN])

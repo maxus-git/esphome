@@ -24,6 +24,7 @@ class DS248xComponent : public PollingComponent, public i2c::I2CDevice {
   void set_hub_sleep(bool enabled) { enable_hub_sleep_ = enabled; }
   void set_active_pullup(bool enabled) { enable_active_pullup_ = enabled; }
   void set_strong_pullup(bool enabled) { enable_strong_pullup_ = enabled; }
+  void set_ds2482_800(bool enabled) {ds2482_800_ = enabled; }
 
   void register_sensor(DS248xTemperatureSensor *sensor);
 
@@ -39,6 +40,7 @@ class DS248xComponent : public PollingComponent, public i2c::I2CDevice {
   bool enable_hub_sleep_ = false;
   bool enable_active_pullup_ = false;
   bool enable_strong_pullup_ = false;
+  bool ds2482_800_ = false;
 
   std::vector<uint64_t> found_sensors_;
 
@@ -58,7 +60,7 @@ class DS248xComponent : public PollingComponent, public i2c::I2CDevice {
 
   void write_to_wire(uint8_t data);
 
-  uint8_t read_from_wire(uint8_t pointer_code = 0xE1);
+  uint8_t read_from_wire(uint8_t read_register);
 
   bool search(uint64_t *address);
 };

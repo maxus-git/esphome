@@ -69,24 +69,21 @@ void DS248xComponent::setup() {
   uint64_t address = 0;
   std::vector<uint64_t> raw_sensors;
   uint8_t channel = 0;
-  for (auto *sensor : this->sensors_) {
-    channel = sensor->get_channel();
-    ESP_LOGCONFIG(TAG, "Channel: %u", channel);
-    if (channel > 0) {
-      ESP_LOGCONFIG(TAG, "Channel > 0: %u", channel);
+  if (this->ds2482_800_) {
+    for (auto *sensor : this->sensors_) {
+      channel = sensor->get_channel();
+      ESP_LOGCONFIG(TAG, "Channel: %u", channel);
       sensor->switch_channel(channel);
-      
       while(this->search(&address)) {
         raw_sensors.push_back(address);
       }
     }
-    else sensor->switch_channel(0);
   }
-
-  /* while(this->search(&address)) {
-    raw_sensors.push_back(address);
-    ESP_LOGD(TAG, "Channel: test");
-  } */
+  else {
+    while(this->search(&address)) {
+      raw_sensors.push_back(address);
+    }
+  }
   
   for (auto &address : raw_sensors) {
     auto *address8 = reinterpret_cast<uint8_t *>(&address);
@@ -329,7 +326,7 @@ void DS248xComponent::write_to_wire(uint8_t data) {
   this->write_command(DS248X_COMMAND_WRITEBYTE, data);
 }
 
-uint8_t DS248xComponent::read_from_wire(uint8_t pointer_code) {
+uint8_t DS248xComponent::read_from_wire(uint8_t read_register = DS248X_POINTER_DATA) {
   auto status = wait_while_busy();
 
   if (status & DS248X_STATUS_BUSY) {
@@ -348,7 +345,7 @@ uint8_t DS248xComponent::read_from_wire(uint8_t pointer_code) {
   std::array<uint8_t, 2> cmd;
   cmd[0] = DS248X_COMMAND_SETREADPTR;
   //cmd[1] = DS248X_POINTER_DATA;
-  cmd[1] = pointer_code;
+  cmd[1] = read_register;
   this->write(cmd.data(), sizeof(cmd));
 
   uint8_t data_byte;
