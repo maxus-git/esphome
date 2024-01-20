@@ -80,10 +80,10 @@ void DS248xComponent::setup() {
     else sensor->switch_channel(0);
   } */
 
-  while(this->search(&address)) {
+  /* while(this->search(&address)) {
     raw_sensors.push_back(address);
     ESP_LOGD(TAG, "Channel: test");
-  }
+  } */
   
   for (auto &address : raw_sensors) {
     auto *address8 = reinterpret_cast<uint8_t *>(&address);
