@@ -68,9 +68,9 @@ void DS248xComponent::setup() {
   uint8_t channel = 0;
   for (auto *sensor : this->sensors_) {
     channel = sensor->get_channel();
-    ESP_LOGW(TAG, "Channel: %u", channel);
+    ESP_LOGCONFIG(TAG, "Channel: %u", channel);
     if (channel > 0) {
-      ESP_LOGW(TAG, "Channel > 0: %u", channel);
+      ESP_LOGCONFIG(TAG, "Channel > 0: %u", channel);
       sensor->switch_channel(channel);
       
       while(this->search(&address)) {
@@ -425,18 +425,12 @@ const std::string &DS248xTemperatureSensor::get_address_name() {
 }
 uint8_t DS248xTemperatureSensor::get_channel() const {return this->channel_; } // MARKUS
 
-bool DS248xTemperatureSensor::set_channel(uint8_t channel) { // MARKUS
-  if ( (channel >= 0) && (channel <= 7) ) {
-    channel_ = channel;
-    return true;
-  }
-  else return false;
-}
+void DS248xTemperatureSensor::set_channel(uint8_t channel) { channel_ = channel; } // MARKUS
 
 void DS248xTemperatureSensor::switch_channel(uint8_t channel) { // MARKUS
   uint8_t ch, ch_read;
 
-  this->channel_ = channel;
+  //this->channel_ = channel;
 
   switch (channel) {
     case 0:
