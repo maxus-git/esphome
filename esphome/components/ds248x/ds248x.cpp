@@ -65,7 +65,7 @@ void DS248xComponent::setup() {
   this->reset_hub();
   uint64_t address = 0;
   std::vector<uint64_t> raw_sensors;
-  uint8_t channel = 0;
+/*   uint8_t channel = 0;
   for (auto *sensor : this->sensors_) {
     channel = sensor->get_channel();
     ESP_LOGW(TAG, "Channel 1 %u:", channel);
@@ -78,6 +78,10 @@ void DS248xComponent::setup() {
       }
     }
     else sensor->switch_channel(0);
+  } */
+
+  while(this->search(&address)) {
+    raw_sensors.push_back(address);
   }
   
   for (auto &address : raw_sensors) {
