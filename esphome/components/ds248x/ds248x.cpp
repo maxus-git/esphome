@@ -82,6 +82,7 @@ void DS248xComponent::setup() {
 
   while(this->search(&address)) {
     raw_sensors.push_back(address);
+    ESP_LOGD(TAG, "Channel: test");
   }
   
   for (auto &address : raw_sensors) {
