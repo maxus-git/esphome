@@ -40,7 +40,6 @@ async def to_code(config):
     cg.add(var.set_hub_sleep(config[CONF_HUB_SLEEP]))
     cg.add(var.set_active_pullup(config[CONF_ACTIVE_PULLUP]))
     cg.add(var.set_strong_pullup(config[CONF_STRONG_PULLUP]))
-    cg.add(var.set_channel(0)) # MARKUS
 
     if CONF_SLEEP_PIN in config:
       pin = await cg.gpio_pin_expression(config[CONF_SLEEP_PIN])
