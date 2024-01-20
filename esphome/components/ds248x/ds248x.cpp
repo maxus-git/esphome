@@ -478,7 +478,8 @@ void DS248xTemperatureSensor::switch_channel(uint8_t channel) { // MARKUS
 
   this->parent_->write_command(DS248X_COMMAND_SETREADPTR, DS248X_CH_SEL_REGISTER);
   
-  uint8_t check = this->parent_->read_from_wire();
+  //uint8_t check = this->parent_->read_from_wire();
+  uint8_t check = this->parent_->read(&check, sizeof(check));
   ESP_LOGD(TAG, "check: %u", check);
 
   if (check != ch_read) {
