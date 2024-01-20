@@ -27,6 +27,8 @@ static const uint8_t DS248X_STATUS_DIR           = (1 << 7);
 
 static const uint8_t DS248X_POINTER_DATA         = 0xE1;
 
+static const uint8_t DS248X_CH_SEL_REGISTER      = 0xD2;
+
 static const uint8_t DS248X_POINTER_CONFIG       = 0xC3;
 static const uint8_t DS248X_CONFIG_ACTIVE_PULLUP = (1 << 0);
 static const uint8_t DS248X_CONFIG_POWER_DOWN    = (1 << 1);
@@ -474,7 +476,7 @@ void DS248xTemperatureSensor::switch_channel(uint8_t channel) { // MARKUS
 
   this->parent_->write_command(DS248X_COMMAND_SELECT_CH, ch);
 
-  //this->parent_->write_command(DS248X_COMMAND_SETREADPTR, DS248X_POINTER_CONFIG);
+  this->parent_->write_command(DS248X_COMMAND_SETREADPTR, DS248X_CH_SEL_REGISTER);
   
   uint8_t check = this->parent_->read_from_wire();
   ESP_LOGD(TAG, "check: %u", check);
