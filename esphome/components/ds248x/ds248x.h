@@ -58,7 +58,7 @@ class DS248xComponent : public PollingComponent, public i2c::I2CDevice {
 
   void write_to_wire(uint8_t data);
 
-  uint8_t read_from_wire(uint8_t pointer_code = DS248X_POINTER_DATA);
+  uint8_t read_from_wire(uint8_t pointer_code = 0xE1);
 
   bool search(uint64_t *address);
 };
