@@ -68,8 +68,9 @@ void DS248xComponent::setup() {
   uint8_t channel = 0;
   for (auto *sensor : this->sensors_) {
     channel = sensor->get_channel();
+    ESP_LOGW(TAG, "Channel 1 %u:", channel);
     if (channel > 0) {
-      ESP_LOGW(TAG, "Channel %u:", channel);
+      ESP_LOGW(TAG, "Channel 2 %u:", channel);
       sensor->switch_channel(channel);
       
       while(this->search(&address)) {
