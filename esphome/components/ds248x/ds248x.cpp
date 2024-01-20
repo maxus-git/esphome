@@ -426,10 +426,7 @@ const std::string &DS248xTemperatureSensor::get_address_name() {
 }
 uint8_t DS248xTemperatureSensor::get_channel() const {return this->channel_; } // MARKUS
 
-// MARKUS
-void DS248xTemperatureSensor::set_channel(uint8_t channel) { 
-  this->channel_ = channel;
-  ESP_LOGD(TAG, "set_channel: %u", channel); } 
+void DS248xTemperatureSensor::set_channel(uint8_t channel) { this->channel_ = channel; } // MARKUS
 
 void DS248xTemperatureSensor::switch_channel(uint8_t channel) { // MARKUS
   uint8_t ch, ch_read;
@@ -477,8 +474,6 @@ void DS248xTemperatureSensor::switch_channel(uint8_t channel) { // MARKUS
   this->parent_->write_command(DS248X_COMMAND_SETREADPTR, DS248X_CH_SEL_REGISTER);
   
   uint8_t check = this->parent_->read_from_wire(DS248X_CH_SEL_REGISTER);
-  //uint8_t check = this->parent_->read(&check, sizeof(check));
-  ESP_LOGD(TAG, "check: %u", check);
 
   if (check != ch_read) {
     ESP_LOGW(TAG, "Channel selection failed!");
