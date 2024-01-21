@@ -517,6 +517,9 @@ bool IRAM_ATTR DS248xTemperatureSensor::read_scratch_pad() {
 }
 
 bool DS248xTemperatureSensor::setup_sensor() {
+
+  this->switch_channel(this->channel_); // MARKUS
+
   bool r = this->read_scratch_pad();
 
   if (!r) {
