@@ -72,7 +72,7 @@ void DS248xComponent::setup() {
   if (this->ds2482_800_) {
     // for (auto *sensor : this->sensors_) {
     for (uint8_t ch=0; ch <= 7; ch++) {
-      // channel = sensor->get_channel();
+      last_device_found = false;
       ESP_LOGCONFIG(TAG, "Switch to channel: %u", ch);
       this->sensors_[0]->switch_channel(ch);
       while(this->search(&address)) {
