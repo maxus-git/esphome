@@ -69,13 +69,12 @@ void DS248xComponent::setup() {
   uint64_t address = 0;
   std::vector<uint64_t> raw_sensors;
   // uint8_t channel = 0;
-  DS248xTemperatureSensor sensor_static;
   if (this->ds2482_800_) {
     // for (auto *sensor : this->sensors_) {
     for (uint8_t ch=0; ch <= 7; ch++) {
       // channel = sensor->get_channel();
       ESP_LOGCONFIG(TAG, "Switch to channel: %u", ch);
-      sensor_static.switch_channel(ch);
+      this->sensors_[0]->switch_channel(ch);
       while(this->search(&address)) {
         raw_sensors.push_back(address);
         ESP_LOGD(TAG, "address: 0x%s (CH: %u)", format_hex(address).c_str(), ch);
