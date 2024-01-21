@@ -508,11 +508,6 @@ bool IRAM_ATTR DS248xTemperatureSensor::read_scratch_pad() {
     return false;
   }
 
-  if (this->parent_->ds2482_800_) { // MARKUS
-    this->switch_channel(this->channel_);
-    ESP_LOGD(TAG, "Switch to Channel: %u", this->channel_);
-  }
-
   this->parent_->select(this->address_);
   this->parent_->write_to_wire(DALLAS_COMMAND_READ_SCRATCH_PAD);
 
@@ -524,11 +519,11 @@ bool IRAM_ATTR DS248xTemperatureSensor::read_scratch_pad() {
 }
 
 bool DS248xTemperatureSensor::setup_sensor() {
+  if (this->parent_->ds2482_800_) { // MARKUS
+    this->switch_channel(this->channel_);
+  }
+  
   bool r = this->read_scratch_pad();
-
-  // if (this->parent_->ds2482_800_) { // MARKUS
-  //   this->switch_channel(this->channel_);
-  // }
 
   if (!r) {
     ESP_LOGE(TAG, "Reading scratchpad failed");
@@ -571,10 +566,10 @@ bool DS248xTemperatureSensor::setup_sensor() {
     return false;
   }
 
-  if (this->parent_->ds2482_800_) { // MARKUS
-    this->switch_channel(this->channel_);
-    ESP_LOGD(TAG, "Switch to Channel: %u", this->channel_);
-  }
+  // if (this->parent_->ds2482_800_) { // MARKUS
+  //   this->switch_channel(this->channel_);
+  //   ESP_LOGD(TAG, "Switch to Channel: %u", this->channel_);
+  // }
 
   this->parent_->select(this->address_);
   this->parent_->write_to_wire(DALLAS_COMMAND_WRITE_SCRATCH_PAD);
@@ -588,10 +583,10 @@ bool DS248xTemperatureSensor::setup_sensor() {
     return false;
   }
 
-  if (this->parent_->ds2482_800_) { // MARKUS
-    this->switch_channel(this->channel_);
-    ESP_LOGD(TAG, "Switch to Channel: %u", this->channel_);
-  }
+  // if (this->parent_->ds2482_800_) { // MARKUS
+  //   this->switch_channel(this->channel_);
+  //   ESP_LOGD(TAG, "Switch to Channel: %u", this->channel_);
+  // }
 
   this->parent_->select(this->address_);
   this->parent_->write_to_wire(DALLAS_COMMAND_SAVE_EEPROM);
