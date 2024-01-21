@@ -200,11 +200,11 @@ void DS248xComponent::update() {
     DS248xTemperatureSensor* sensor = sensors_[readIdx];
     readIdx++;
 
-    bool res = sensor->read_scratch_pad();
+    if (this->ds2482_800_) { // MARKUS
+      sensor->switch_channel(sensor->get_channel());
+    }
 
-    // if (this->ds2482_800_) { // MARKUS
-    //   sensor->switch_channel(sensor->get_channel());
-    // }
+    bool res = sensor->read_scratch_pad();
 
     if (!res) {
       ESP_LOGW(TAG, "'%s' - Resetting bus for read failed!", sensor->get_name().c_str());
