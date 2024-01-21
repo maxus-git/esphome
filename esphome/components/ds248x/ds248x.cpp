@@ -168,6 +168,7 @@ void DS248xComponent::update() {
     return;
   }
 
+/*
   // MARKUS
   if (this->ds2482_800_) {
     for (auto *sensor : this->sensors_) {
@@ -191,6 +192,12 @@ void DS248xComponent::update() {
     // ORIGINAL
   }
   // MARKUS
+*/
+  this->write_to_wire(WIRE_COMMAND_SKIP);
+  if (this->enable_strong_pullup_) {
+    this->write_config(this->read_config() | DS248X_CONFIG_STRONG_PULLUP);
+  }
+  this->write_to_wire(DALLAS_COMMAND_START_CONVERSION);
 
   uint16_t max_wait_time = 0;
 
@@ -206,8 +213,7 @@ void DS248xComponent::update() {
 
   this->set_timeout(TAG, max_wait_time, [this] {
     ESP_LOGV(TAG, "Sensors read completed");
-    // this->set_interval(TAG, 50, [this]() {
-    this->set_interval(TAG, 100, [this]() {
+    this->set_interval(TAG, 50, [this]() {
       if (sensors_.size() <= readIdx) {
         if (this->enable_bus_sleep_) {
           this->write_config(this->read_config() | DS248X_CONFIG_POWER_DOWN);
