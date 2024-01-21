@@ -168,6 +168,8 @@ void DS248xComponent::update() {
     return;
   }
 
+  // MARKUS --> fehlt noch was?
+
   this->write_to_wire(WIRE_COMMAND_SKIP);
   if (this->enable_strong_pullup_) {
     this->write_config(this->read_config() | DS248X_CONFIG_STRONG_PULLUP);
@@ -198,11 +200,12 @@ void DS248xComponent::update() {
     ESP_LOGV(TAG, "Update Sensor idx: %i", readIdx);
 
     DS248xTemperatureSensor* sensor = sensors_[readIdx];
-    readIdx++;
-
+    
     if (this->ds2482_800_) { // MARKUS
       sensor->switch_channel(sensor->get_channel());
     }
+    
+    readIdx++;
 
     bool res = sensor->read_scratch_pad();
 
