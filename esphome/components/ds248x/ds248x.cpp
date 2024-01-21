@@ -197,7 +197,7 @@ void DS248xComponent::update() {
         this->cancel_interval(TAG);
         return;
     }
-    ESP_LOGV(TAG, "Update Sensor idx: %i", readIdx);
+    ESP_LOGD(TAG, "Update Sensor idx: %i", readIdx); // MARKUS LOGV zu LOGD geändert
 
     DS248xTemperatureSensor* sensor = sensors_[readIdx];
     
