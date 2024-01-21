@@ -206,44 +206,45 @@ void DS248xComponent::update() {
 
   this->set_timeout(TAG, max_wait_time, [this] {
     ESP_LOGV(TAG, "Sensors read completed");
-    this->set_interval(TAG, 50, [this]() {
+    // this->set_interval(TAG, 50, [this]() {
+    this->set_interval(TAG, 100, [this]() {
       if (sensors_.size() <= readIdx) {
         if (this->enable_bus_sleep_) {
           this->write_config(this->read_config() | DS248X_CONFIG_POWER_DOWN);
         }
         this->cancel_interval(TAG);
         return;
-    }
-    ESP_LOGD(TAG, "Update Sensor idx: %i", readIdx); // MARKUS LOGV zu LOGD geändert
+      }
+      ESP_LOGD(TAG, "Update Sensor idx: %i", readIdx); // MARKUS LOGV zu LOGD geändert
 
-    DS248xTemperatureSensor* sensor = sensors_[readIdx];
-    
-    // MARKUS
-    if (this->ds2482_800_) {
-      sensor->switch_channel(sensor->get_channel());
-      ESP_LOGD(TAG, "Switch to Channel: %u", sensor->get_channel());
-    }
-    // MARKUS
-    
-    readIdx++;
+      DS248xTemperatureSensor* sensor = sensors_[readIdx];
+      
+      // MARKUS
+      if (this->ds2482_800_) {
+        sensor->switch_channel(sensor->get_channel());
+        ESP_LOGD(TAG, "Switch to Channel: %u", sensor->get_channel());
+      }
+      // MARKUS
+      
+      readIdx++;
 
-    bool res = sensor->read_scratch_pad();
+      bool res = sensor->read_scratch_pad();
 
-    if (!res) {
-      ESP_LOGW(TAG, "'%s' - Resetting bus for read failed!", sensor->get_name().c_str());
-      sensor->publish_state(NAN);
-      this->status_set_warning();
-      return;
-    }
-    if (!sensor->check_scratch_pad()) {
-      sensor->publish_state(NAN);
-      this->status_set_warning();
-      return;
-    }
+      if (!res) {
+        ESP_LOGW(TAG, "'%s' - Resetting bus for read failed!", sensor->get_name().c_str());
+        sensor->publish_state(NAN);
+        this->status_set_warning();
+        return;
+      }
+      if (!sensor->check_scratch_pad()) {
+        sensor->publish_state(NAN);
+        this->status_set_warning();
+        return;
+      }
 
-    float tempc = sensor->get_temp_c();
-    ESP_LOGD(TAG, "'%s': Got Temperature=%.1f°C", sensor->get_name().c_str(), tempc);
-    sensor->publish_state(tempc);
+      float tempc = sensor->get_temp_c();
+      ESP_LOGD(TAG, "'%s': Got Temperature=%.1f°C", sensor->get_name().c_str(), tempc);
+      sensor->publish_state(tempc);
     });
   });
 }
