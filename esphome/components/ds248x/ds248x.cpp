@@ -203,6 +203,7 @@ void DS248xComponent::update() {
     
     if (this->ds2482_800_) { // MARKUS
       sensor->switch_channel(sensor->get_channel());
+      ESP_LOGD(TAG, "Switch to Channel: %u", sensor->get_channel());
     }
     
     readIdx++;
