@@ -200,6 +200,8 @@ void DS248xComponent::update() {
     DS248xTemperatureSensor* sensor = sensors_[readIdx];
     readIdx++;
 
+    sensor->switch_channel(sensor->get_channel()); // MARKUS
+
     bool res = sensor->read_scratch_pad();
 
      if (!res) {
