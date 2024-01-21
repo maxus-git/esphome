@@ -570,6 +570,7 @@ bool DS248xTemperatureSensor::setup_sensor() {
   //   this->switch_channel(this->channel_);
   //   ESP_LOGD(TAG, "Switch to Channel: %u", this->channel_);
   // }
+  delay(10); // MARKUS
 
   this->parent_->select(this->address_);
   this->parent_->write_to_wire(DALLAS_COMMAND_WRITE_SCRATCH_PAD);
