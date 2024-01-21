@@ -200,7 +200,9 @@ void DS248xComponent::update() {
     DS248xTemperatureSensor* sensor = sensors_[readIdx];
     readIdx++;
 
-    sensor->switch_channel(sensor->get_channel()); // MARKUS
+    if (this->ds2482_800_) { // MARKUS
+      sensor->switch_channel(sensor->get_channel());
+    }
 
     bool res = sensor->read_scratch_pad();
 
@@ -518,7 +520,9 @@ bool IRAM_ATTR DS248xTemperatureSensor::read_scratch_pad() {
 
 bool DS248xTemperatureSensor::setup_sensor() {
 
-  this->switch_channel(this->channel_); // MARKUS
+  if (this->parent_->ds2482_800_) { // MARKUS
+    this->switch_channel(this->channel_);
+  }
 
   bool r = this->read_scratch_pad();
 
