@@ -77,7 +77,7 @@ void DS248xComponent::setup() {
       this->sensors_[0]->switch_channel(ch);
       while(this->search(&address)) {
         raw_sensors.push_back(address);
-        ESP_LOGD(TAG, "address: 0x%s (CH: %u)", format_hex(address).c_str(), ch);
+        ESP_LOGD(TAG, "Address: 0x%s (CH: %u)", format_hex(address).c_str(), ch);
       }
     }
   }
@@ -203,7 +203,6 @@ void DS248xComponent::update() {
     if (this->ds2482_800_) { // MARKUS
       sensor->switch_channel(sensor->get_channel());
     }
-    delay(10); // MARKUS
 
     bool res = sensor->read_scratch_pad();
 
