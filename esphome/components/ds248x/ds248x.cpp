@@ -603,12 +603,12 @@ bool DS248xTemperatureSensor::check_scratch_pad() {
       config_validity = ((this->scratch_pad_[4] & 0x10) == 0x10);
   }
 
-#ifdef ESPHOME_LOG_LEVEL_VERY_VERBOSE
+// #ifdef ESPHOME_LOG_LEVEL_VERY_VERBOSE
   ESP_LOGVV(TAG, "Scratch pad: %02X.%02X.%02X.%02X.%02X.%02X.%02X.%02X.%02X (%02X)", this->scratch_pad_[0],
             this->scratch_pad_[1], this->scratch_pad_[2], this->scratch_pad_[3], this->scratch_pad_[4],
             this->scratch_pad_[5], this->scratch_pad_[6], this->scratch_pad_[7], this->scratch_pad_[8],
             crc8(this->scratch_pad_, 8));
-#endif
+// #endif
   if (!chksum_validity) {
     ESP_LOGW(TAG, "'%s' - Scratch pad checksum invalid!", this->get_name().c_str());
   } else if (!config_validity) {
