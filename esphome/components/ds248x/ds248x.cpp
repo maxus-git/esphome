@@ -203,6 +203,7 @@ void DS248xComponent::update() {
     if (this->ds2482_800_) { // MARKUS
       sensor->switch_channel(sensor->get_channel());
     }
+    delay(10); // MARKUS
 
     bool res = sensor->read_scratch_pad();
 
@@ -522,7 +523,6 @@ bool DS248xTemperatureSensor::setup_sensor() {
   if (this->parent_->ds2482_800_) { // MARKUS
     this->switch_channel(this->channel_);
   }
-  delay(20);
   
   bool r = this->read_scratch_pad();
 
