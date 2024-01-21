@@ -168,13 +168,29 @@ void DS248xComponent::update() {
     return;
   }
 
-  // MARKUS --> fehlt noch was?
+  // MARKUS
+  if (this->ds2482_800_) {
+    for (auto *sensor : this->sensors_) {
+        sensor->switch_channel(sensor->get_channel());
+        ESP_LOGD(TAG, "Switch to Channel: %u", sensor->get_channel());
 
-  this->write_to_wire(WIRE_COMMAND_SKIP);
-  if (this->enable_strong_pullup_) {
-    this->write_config(this->read_config() | DS248X_CONFIG_STRONG_PULLUP);
+        this->write_to_wire(WIRE_COMMAND_SKIP);
+        if (this->enable_strong_pullup_) {
+          this->write_config(this->read_config() | DS248X_CONFIG_STRONG_PULLUP);
+        }
+        this->write_to_wire(DALLAS_COMMAND_START_CONVERSION);
+    }
   }
-  this->write_to_wire(DALLAS_COMMAND_START_CONVERSION);
+  else {
+    // ORIGINAL
+    this->write_to_wire(WIRE_COMMAND_SKIP);
+    if (this->enable_strong_pullup_) {
+      this->write_config(this->read_config() | DS248X_CONFIG_STRONG_PULLUP);
+    }
+    this->write_to_wire(DALLAS_COMMAND_START_CONVERSION);
+    // ORIGINAL
+  }
+  // MARKUS
 
   uint16_t max_wait_time = 0;
 
@@ -184,6 +200,7 @@ void DS248xComponent::update() {
       max_wait_time = sensorWaitTime;
     }
   }
+  ESP_LOGD(TAG, "max_wait_time = %u ms", max_wait_time);
 
   readIdx = 0;
 
@@ -202,11 +219,6 @@ void DS248xComponent::update() {
     DS248xTemperatureSensor* sensor = sensors_[readIdx];
     
     // MARKUS
-    auto status = wait_while_busy();
-    if (status & DS248X_STATUS_BUSY) {
-      return; // TODO: error handling
-    }
-    
     if (this->ds2482_800_) {
       sensor->switch_channel(sensor->get_channel());
       ESP_LOGD(TAG, "Switch to Channel: %u", sensor->get_channel());
