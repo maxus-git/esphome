@@ -202,14 +202,14 @@ void DS248xComponent::update() {
     DS248xTemperatureSensor* sensor = sensors_[readIdx];
     
     // MARKUS
-    if (this->ds2482_800_) {
-      sensor->switch_channel(sensor->get_channel());
-      ESP_LOGD(TAG, "Switch to Channel: %u", sensor->get_channel());
-    }
-
     auto status = wait_while_busy();
     if (status & DS248X_STATUS_BUSY) {
       return; // TODO: error handling
+    }
+    
+    if (this->ds2482_800_) {
+      sensor->switch_channel(sensor->get_channel());
+      ESP_LOGD(TAG, "Switch to Channel: %u", sensor->get_channel());
     }
     // MARKUS
     
